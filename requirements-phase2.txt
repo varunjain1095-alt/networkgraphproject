@@ -1,0 +1,6 @@
+# Phase 2 — PyG predictions (install after Phase 1 works)
+-r requirements.txt
+
+# PyTorch / PyG — versions vary by platform; pin during Phase 2 setup.
+torch>=2.2
+torch-geometric>=2.5

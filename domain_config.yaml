@@ -1,0 +1,60 @@
+version: "1.0.0"
+default_domain: gaming
+
+# Generic network graph intelligence — domain name mappings.
+# Swap `default_domain` or add domains without changing core code.
+
+domains:
+  gaming:
+    display_name: Gaming Platform
+    entities:
+      user: Player
+      item: Game
+      organization: Studio
+      trusted_source: Curator
+    activities:
+      shared_activity: Co-play session
+      interaction: Play session
+      contribution: Review
+    relationship_types:
+      friend: Friend
+      follow: Follow
+      collaborate: Collaborate
+      member_of: Guild member
+    events:
+      churn: Player churn
+      onboarding: Player onboarding
+      feature_exposure: Feature rollout exposure
+      support_ticket: Support ticket
+      trust_safety: Trust & safety event
+    dashboard_labels:
+      item_plural: Games
+      user_plural: Players
+      organization_plural: Studios
+
+  saas:
+    display_name: SaaS Workspace
+    entities:
+      user: User
+      item: Feature
+      organization: Workspace
+      trusted_source: Internal champion
+    activities:
+      shared_activity: Shared project
+      interaction: Feature usage
+      contribution: Document edit
+    relationship_types:
+      friend: Teammate
+      follow: Follow
+      collaborate: Collaborator
+      member_of: Workspace member
+    events:
+      churn: Account churn
+      onboarding: User onboarding
+      feature_exposure: Feature flag exposure
+      support_ticket: Support ticket
+      trust_safety: Trust & safety event
+    dashboard_labels:
+      item_plural: Features
+      user_plural: Users
+      organization_plural: Workspaces

@@ -1,0 +1,29 @@
+# Secrets — never commit
+.env
+
+# Generated data and caches
+data/
+*.db
+*.gpickle
+*.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
