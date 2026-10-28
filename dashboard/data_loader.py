@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import gzip
+import os
+import pickle
 import sqlite3
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -16,6 +19,8 @@ from use_cases.context import UseCaseContext
 from use_cases.registry import run_all
 
 from dashboard.explainability_display import item_involves_user
+
+SNAPSHOT_PATH = Path(__file__).with_name("snapshot.pkl.gz")
 
 try:
     from analytics.pyg.predictions import load_predictions
@@ -41,11 +46,36 @@ class DashboardData:
     error: str | None = None
 
     @classmethod
+    def load_from_snapshot(cls, snapshot_path: Path = SNAPSHOT_PATH) -> "DashboardData":
+        data = cls(db_path=snapshot_path)
+        with gzip.open(snapshot_path, "rb") as handle:
+            payload = pickle.load(handle)
+        data.graphs = payload.get("graphs", {})
+        data.projections = payload.get("projections", {})
+        data.ranked_users = payload.get("ranked_users", pd.DataFrame())
+        data.users_lookup = payload.get("users_lookup", {})
+        data.clusters = payload.get("clusters", pd.DataFrame())
+        data.layer3_items = payload.get("layer3_items", pd.DataFrame())
+        data.use_case_results = payload.get("use_case_results", {})
+        data.predictions = payload.get("predictions", pd.DataFrame())
+        data.training_metadata = payload.get("training_metadata", {})
+        data.alerts = payload.get("alerts", [])
+        data.ready = True
+        return data
+
+    @classmethod
     def load(cls) -> "DashboardData":
+        use_snapshot = (os.environ.get("USE_SNAPSHOT", "") or "").lower() in ("1", "true", "yes")
+        if use_snapshot and SNAPSHOT_PATH.is_file():
+            return cls.load_from_snapshot(SNAPSHOT_PATH)
+
+        explicit_db = os.environ.get("DATABASE_PATH", "").strip()
         db_path = resolve_path("DATABASE_PATH", "data/synthetic.db")
         data = cls(db_path=db_path)
 
         if not db_path.is_file():
+            if not explicit_db and SNAPSHOT_PATH.is_file():
+                return cls.load_from_snapshot(SNAPSHOT_PATH)
             data.error = (
                 f"Database not found at {db_path}. "
                 "Run: python generator/run_generator.py --scale dev && "

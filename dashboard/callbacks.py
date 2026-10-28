@@ -125,7 +125,9 @@ def register_callbacks(app, data: DashboardData) -> None:
             }
         if trigger == IDs.USE_CASE_TABLE and uc_rows:
             uid = uc_rows[0].get("node_id", "")
-            if uid.startswith("community_") or "|" in uid:
+            if "|" in uid:
+                uid = uid.split("|")[0]
+            if uid.startswith("community_"):
                 return current or {"user_id": None, "source": "usecase"}
             return {"user_id": uid, "source": "usecase"}
         if trigger == IDs.CLUSTER_TABLE and cluster_rows:

@@ -10,6 +10,7 @@ dash>=2.17
 dash-cytoscape>=0.3.0
 dash-ag-grid>=31.0
 plotly>=5.22
+gunicorn>=22.0.0
 
 # Dev / testing
 pytest>=8.0

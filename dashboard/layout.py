@@ -135,6 +135,7 @@ def build_layout(data: DashboardData) -> html.Div:
         )
 
     ranked_rows = data.ranked_users.head(100)[["rank", "display_name", "score", "percentile", "user_id"]].to_dict("records")
+    default_user_id = ranked_rows[0]["user_id"] if ranked_rows else None
     use_case_options = [{"label": r.title, "value": uc_id} for uc_id, r in data.use_case_results.items()]
     default_uc = use_case_options[0]["value"] if use_case_options else None
     cluster_rows = data.clusters.head(50).to_dict("records") if not data.clusters.empty else []
@@ -143,7 +144,7 @@ def build_layout(data: DashboardData) -> html.Div:
 
     return html.Div(
         [
-            dcc.Store(id=IDs.SELECTED_NODE, data={"user_id": None, "source": None}),
+            dcc.Store(id=IDs.SELECTED_NODE, data={"user_id": default_user_id, "source": "ranked" if default_user_id else None}),
             dcc.Store(id=IDs.CLUSTER_HOVER_STORE, data=None),
             *build_pm_stores(),
             html.Header(

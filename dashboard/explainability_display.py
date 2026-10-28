@@ -212,7 +212,14 @@ def related_flag_blocks(
                                     f"Show {len(details)} individual flags",
                                     style={"fontSize": "0.85rem", "color": "#2563eb", "cursor": "pointer"},
                                 ),
-                                html.Ul([html.Li(line) for line in details], style={"marginTop": "0.35rem"}),
+                                html.Ul(
+                                    [html.Li(line) for line in details],
+                                    style={
+                                        "marginTop": "0.35rem",
+                                        "maxHeight": "200px",
+                                        "overflowY": "auto",
+                                    },
+                                ),
                             ],
                             style={"marginTop": "0.25rem"},
                         ),

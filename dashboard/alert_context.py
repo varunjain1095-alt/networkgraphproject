@@ -103,7 +103,13 @@ def _use_case_block(use_case_id: str, title: str, items: list[FlaggedItem], user
                     ),
                     html.Ul(
                         [html.Li(line) for line in details],
-                        style={"marginTop": "0.35rem", "paddingLeft": "1.1rem", "fontSize": "0.85rem"},
+                        style={
+                            "marginTop": "0.35rem",
+                            "paddingLeft": "1.1rem",
+                            "fontSize": "0.85rem",
+                            "maxHeight": "200px",
+                            "overflowY": "auto",
+                        },
                     ),
                 ],
                 style={"marginTop": "0.35rem"},

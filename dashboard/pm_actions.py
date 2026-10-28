@@ -148,6 +148,7 @@ def build_pm_panel_area(item_options: list[dict]) -> html.Div:
                 style={**_PANEL_HIDDEN, **_PANEL_CARD},
             ),
             html.Div(
+                children=build_exclude_panel_content("", "", [], []),
                 id=IDs.PM_EXCLUDE_PANEL,
                 style={**_PANEL_HIDDEN, **_PANEL_CARD},
             ),
@@ -188,30 +189,42 @@ def build_exclude_panel_content(
             "Select which tests and connected users to exclude.",
             style={"fontSize": "0.88rem", "color": "#475569", "margin": "0.35rem 0 0.65rem"},
         ),
+        html.Label(
+            "Relevant tests",
+            style={"fontSize": "0.85rem", "fontWeight": 600, "display": "block" if tests else "none"},
+        ),
+        dcc.Checklist(
+            id=IDs.PM_EXCLUDE_TESTS,
+            options=test_options,
+            value=[tests[0]] if tests else [],
+            labelStyle={"display": "block", "fontSize": "0.85rem", "marginBottom": "0.25rem"},
+            style={
+                "display": "block" if tests else "none",
+                "maxHeight": "120px",
+                "overflowY": "auto",
+            },
+        ),
+        html.Label(
+            "Connected users",
+            style={"fontSize": "0.85rem", "fontWeight": 600, "marginTop": "0.65rem", "display": "block" if conn_options else "none"},
+        ),
+        dcc.Checklist(
+            id=IDs.PM_EXCLUDE_CONNECTIONS,
+            options=conn_options,
+            value=[c["user_id"] for c in connections],
+            labelStyle={"display": "block", "fontSize": "0.85rem", "marginBottom": "0.25rem"},
+            style={
+                "display": "block" if conn_options else "none",
+                "maxHeight": "200px",
+                "overflowY": "auto",
+                "padding": "0.35rem",
+                "border": "1px solid #e2e8f0",
+                "borderRadius": "6px",
+            },
+        ),
     ]
 
-    if tests:
-        children.extend([
-            html.Label("Relevant tests", style={"fontSize": "0.85rem", "fontWeight": 600}),
-            dcc.Checklist(
-                id=IDs.PM_EXCLUDE_TESTS,
-                options=test_options,
-                value=[tests[0]] if tests else [],
-                labelStyle={"display": "block", "fontSize": "0.85rem", "marginBottom": "0.25rem"},
-            ),
-        ])
-
-    if conn_options:
-        children.extend([
-            html.Label("Connected users", style={"fontSize": "0.85rem", "fontWeight": 600, "marginTop": "0.65rem"}),
-            dcc.Checklist(
-                id=IDs.PM_EXCLUDE_CONNECTIONS,
-                options=conn_options,
-                value=[c["user_id"] for c in connections],
-                labelStyle={"display": "block", "fontSize": "0.85rem", "marginBottom": "0.25rem"},
-            ),
-        ])
-    else:
+    if not conn_options:
         children.append(html.P("No connected contamination pairs found for this user.", style={"fontSize": "0.85rem"}))
 
     children.extend([
@@ -259,8 +272,21 @@ def build_exclude_list_panel(entries: list[dict]) -> html.Div:
 
     return html.Div(
         [
-            html.H5("Exclude from testing", style={"fontSize": "0.9rem", "margin": "0.75rem 0 0.35rem"}),
-            html.Ul(rows, style={"paddingLeft": "1.1rem", "margin": 0}),
+            html.H5(
+                f"Exclude from testing ({len(rows)})",
+                style={"fontSize": "0.9rem", "margin": "0.75rem 0 0.35rem"},
+            ),
+            html.Div(
+                html.Ul(rows, style={"paddingLeft": "1.1rem", "margin": 0}),
+                style={
+                    "maxHeight": "240px",
+                    "overflowY": "auto",
+                    "padding": "0.5rem 0.65rem",
+                    "border": "1px solid #e2e8f0",
+                    "borderRadius": "6px",
+                    "background": "#f8fafc",
+                },
+            ),
         ],
         style={"borderTop": "1px solid #e2e8f0", "paddingTop": "0.25rem"},
     )
