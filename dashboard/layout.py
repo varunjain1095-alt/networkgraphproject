@@ -180,22 +180,6 @@ def build_layout(data: DashboardData) -> html.Div:
                         ],
                         style={"width": "240px"},
                     ),
-                    html.Div(
-                        id="importance-toggle-wrap",
-                        children=[
-                            html.Label("Importance"),
-                            dcc.RadioItems(
-                                id=IDs.IMPORTANCE_TOGGLE,
-                                options=[
-                                    {"label": "Most important", "value": "most"},
-                                    {"label": "Least important", "value": "least"},
-                                ],
-                                value="most",
-                                inline=True,
-                            ),
-                        ],
-                        style={"width": "280px", "display": "none"},
-                    ),
                 ],
                 style={"display": "flex", "gap": "1.5rem", "padding": "1rem 1.5rem", "flexWrap": "wrap"},
             ),

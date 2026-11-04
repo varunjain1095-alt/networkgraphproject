@@ -4,7 +4,6 @@
 class IDs:
     SELECTED_NODE = "selected-node"
     ACTIVE_LAYER = "active-layer"
-    IMPORTANCE_TOGGLE = "importance-toggle"
     ACTIVE_USE_CASE = "active-use-case"
     ACTIVE_TAB = "active-tab"
     SELECTED_CLUSTER = "selected-cluster"
