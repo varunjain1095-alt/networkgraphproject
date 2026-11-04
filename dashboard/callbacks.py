@@ -46,17 +46,17 @@ def register_callbacks(app, data: DashboardData) -> None:
         )
 
     @app.callback(
-        Output(IDs.IMPORTANCE_TOGGLE, "style"),
+        Output("importance-toggle-wrap", "style"),
         Input(IDs.ACTIVE_USE_CASE, "value"),
         Input(IDs.ACTIVE_TAB, "value"),
     )
     def toggle_visibility(uc_id, tab):
         if tab != "usecases":
-            return {"display": "none"}
+            return {"width": "280px", "display": "none"}
         result = data.use_case_results.get(uc_id) if uc_id else None
         if not result or not result.supports_toggle:
-            return {"display": "none"}
-        return {"display": "block", "width": "280px"}
+            return {"width": "280px", "display": "none"}
+        return {"width": "280px", "display": "block"}
 
     @app.callback(
         Output(IDs.USE_CASE_TABLE, "rowData"),
